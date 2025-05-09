@@ -133,7 +133,11 @@
         <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
         <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
         <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
-    </div>
+        <p><strong>Caractéristiques de la demande:</strong> <span id="res-caracteristiques"></span></p>
+        <p><strong>Objectifs de l'entreprise cliente:</strong> <span id="res-objectifs"></span></p>
+        <p><strong>Points de douleur (pains):</strong> <span id="res-pains"></span></p>
+        <p><strong>Taille de l'entreprise idéale (ICP):</strong> <span id="res-icp-taille"></span></p>
+      </div>
 
   </div>
 
@@ -218,6 +222,11 @@
       document.getElementById("res-casusages").textContent = data.cas_d_usage.join(", ");
       document.getElementById("res-valeur").textContent = data.proposition_valeur || "Non spécifié";
       document.getElementById("res-segments").textContent = data.segments_clientele.join(", ");
+      document.getElementById("res-caracteristiques").textContent = (data.profil_client_ideal?.caracteristiques_demande || []).join(", ");
+      document.getElementById("res-objectifs").textContent = (data.profil_client_ideal?.objectifs_entreprise || []).join(", ");
+      document.getElementById("res-pains").textContent = (data.profil_client_ideal?.pains_points || []).join(", ");
+      document.getElementById("res-icp-taille").textContent = data.profil_client_ideal?.taille_entreprise_ideale || "Non spécifié";
+
 
       // Afficher le conteneur des résultats
       document.getElementById("result-container").style.display = "block";
