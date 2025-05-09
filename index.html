@@ -211,27 +211,27 @@
     document.getElementById('spinner').style.display = 'none'; 
 
     if (response.ok) {
-      const data = await response.json();
+    const data = await response.json();
 
-      // Mettre à jour les résultats avec les données reçues
-      document.getElementById("res-url").textContent = data.url;
-      document.getElementById("res-taille").textContent = data.taille_entreprise || "Non spécifié";
-      document.getElementById("res-secteur").textContent = data.secteur_activite || "Non spécifié";
-      document.getElementById("res-maturite").textContent = data.maturite || "Non spécifié";
-      document.getElementById("res-motscles").textContent = data.mots_cles_sectoriels.join(", ");
-      document.getElementById("res-casusages").textContent = data.cas_d_usage.join(", ");
-      document.getElementById("res-valeur").textContent = data.proposition_valeur || "Non spécifié";
-      document.getElementById("res-segments").textContent = data.segments_clientele.join(", ");
-      document.getElementById("res-caracteristiques").textContent = (data.profil_client_ideal?.caracteristiques_demande || []).join(", ");
-      document.getElementById("res-objectifs").textContent = (data.profil_client_ideal?.objectifs_entreprise || []).join(", ");
-      document.getElementById("res-pains").textContent = (data.profil_client_ideal?.pains_points || []).join(", ");
-      document.getElementById("res-icp-taille").textContent = data.profil_client_ideal?.taille_entreprise_ideale || "Non spécifié";
+    // Accès aux sous-objets
+    const entreprise = data.entreprise || {};
+    const profil = data.profil_client_ideal || {};
 
+    document.getElementById("res-url").textContent = entreprise.url || "Non spécifié";
+    document.getElementById("res-taille").textContent = entreprise.taille_entreprise || "Non spécifié";
+    document.getElementById("res-secteur").textContent = entreprise.secteur_activite || "Non spécifié";
+    document.getElementById("res-maturite").textContent = entreprise.maturite || "Non spécifié";
+    document.getElementById("res-valeur").textContent = entreprise.proposition_valeur || "Non spécifié";
 
-      // Afficher le conteneur des résultats
-      document.getElementById("result-container").style.display = "block";
-    } else {
-      alert("Erreur lors de l'envoi : " + response.status);
+    document.getElementById("res-motscles").textContent = (profil.mots_cles_sectoriels || []).join(", ");
+    document.getElementById("res-casusages").textContent = (profil.cas_d_usage || []).join(", ");
+    document.getElementById("res-segments").textContent = (profil.segments_clientele || []).join(", ");
+    document.getElementById("res-caracteristiques").textContent = (profil.caracteristiques_demande || []).join(", ");
+    document.getElementById("res-objectifs").textContent = (profil.objectifs_entreprise || []).join(", ");
+    document.getElementById("res-pains").textContent = (profil.pains_points || []).join(", ");
+    document.getElementById("res-icp-taille").textContent = profil.taille_entreprise_ideale || "Non spécifié";
+
+    document.getElementById("result-container").style.display = "block";
     }
   });
   </script>
