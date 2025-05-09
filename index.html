@@ -2,15 +2,137 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Soumettre une URL</title>
+  <title>Quel est votre site internet ?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient( #0F0F0F 0%, #3C0F58 25%, #5A189A 50%, #3C0F58 75%, #0F0F0F 100%);
+      color: #ffffff;
+    }
+
+    .container {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.4); /* fond noir transparent */
+        backdrop-filter: blur(10px); /* flou de l'arrière-plan */
+        -webkit-backdrop-filter: blur(10px); /* support Safari */
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); /* ombre douce */
+        border-radius: 16px;
+        max-width: 400px;
+        width: 100%;
+        padding: 40px 60px;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* bord fin et subtil */
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      margin-top: 50px;
+    }
+
+    .webhook-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    }
+
+    input {
+      width: 200px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+    background: #5A189A ;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 0 0 1px rgba(90, 24, 154, 0.6), 0 4px 20px rgba(90, 24, 154, 0.4);
+    transition: all 0.3s ease;
+    width: fit-content;
+    margin: auto;
+    margin-top: 50px;
+    }
+
+    button:hover {
+    background: #661cb0 ;
+    box-shadow: 0 0 22px 5px rgba(255, 255, 255, 0.05111), 0 4px 25px rgba(90, 24, 154, 0.11);
+    border-color: rgba(255, 255, 255, 0.4);
+    }
+
+  </style>
 </head>
 <body>
-  <form id="webhookForm">
-    <label for="url">Veuillez entrer l'adresse de votre site internet</label>
-    <input id="url" name="url" required>
-    <button type="submit">Envoyer</button>
-  </form>
 
+  <div id="particles-js"></div> <!-- L'élément pour l'effet de particules -->
+
+  <div class="container">
+      <h1>Quel est votre site internet ?</h1>
+      <form id="webhookForm" class="webhook-form">
+      <input type="url" id="url" name="url" placeholder="https://votre-site.com" required>
+      <button type="submit">
+        <span class="btn-text">Envoyer</span>
+      </button>
+      </form>
+  </div>
+
+  <!-- Charge la bibliothèque Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <!-- Script qui initialise les particules -->
+  <script>
+    window.onload = function () {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 100 },
+          size: { value: 1 },
+          color: { value: "#ffffff" },
+          move: { speed: 1 },
+          line_linked: { enable: false },
+          opacity: {
+            value: 0.5,
+            anim: { enable: true, speed: 0.2, opacity_min: 0.2 }
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: false },
+            onclick: { enable: false }
+          }
+        },
+        retina_detect: true
+      });
+    };
+  </script>
+
+  <style>
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+
+  <!-- Script pour envoyer le formulaire au webhook -->
   <script>
     const webhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/06c756e9-9d43-48da-9392-d6350eed01e3";
 
