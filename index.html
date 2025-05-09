@@ -107,6 +107,11 @@
       z-index: -1;
     }
 
+    .result-container {
+        flex-direction: row;
+
+    }
+
   </style>
 </head>
 <body>
@@ -124,21 +129,24 @@
       <div id="loading">Veuillez patienter... <div id="spinner"></div></div>
 
       <div id="result-container" style="display:none; text-align: left; color: white;">
-        <h2>Résultats de l'analyse</h2>
-        <p><strong>URL:</strong> <span id="res-url"></span></p>
-        <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
-        <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
-        <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
-        <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
-        
-        <h2>ICP de l'entreprise</h2>
-        <p><strong>Taille de l'entreprise idéale:</strong> <span id="res-icp-taille"></span></p>
-        <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
-        <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
-        <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
-        <p><strong>Caractéristiques de la demande:</strong> <span id="res-caracteristiques"></span></p>
-        <p><strong>Objectifs de l'entreprise cliente:</strong> <span id="res-objectifs"></span></p>
-        <p><strong>Points de douleur (pains):</strong> <span id="res-pains"></span></p>
+        <div class="results-analysis">
+            <h2>Résultats de l'analyse</h2>
+            <p><strong>URL:</strong> <span id="res-url"></span></p>
+            <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
+            <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
+            <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
+            <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
+        </div>
+        <div class="results-icp">
+            <h2>ICP de l'entreprise</h2>
+            <p><strong>Taille de l'entreprise idéale:</strong> <span id="res-icp-taille"></span></p>
+            <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
+            <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
+            <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
+            <p><strong>Caractéristiques de la demande:</strong> <span id="res-caracteristiques"></span></p>
+            <p><strong>Objectifs de l'entreprise cliente:</strong> <span id="res-objectifs"></span></p>
+            <p><strong>Points de douleur :</strong> <span id="res-pains"></span></p>
+        </div>
       </div>
 
   </div>
@@ -233,7 +241,7 @@
     document.getElementById("res-pains").textContent = (profil.pains_points || []).join(", ");
     document.getElementById("res-icp-taille").textContent = profil.taille_entreprise_ideale || "Non spécifié";
 
-    document.getElementById("result-container").style.display = "block";
+    document.getElementById("result-container").style.display = "flex";
     }
   });
   </script>
