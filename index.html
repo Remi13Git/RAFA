@@ -77,10 +77,27 @@
     border-color: rgba(255, 255, 255, 0.4);
     }
 
+    /* Spinner de chargement */
     #loading {
       color: white;
       font-size: 1.2rem;
       display: none;
+    }
+
+    #spinner {
+      display: none;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     #particles-js {
@@ -97,14 +114,27 @@
   <div id="particles-js"></div> 
 
   <div class="container">
-      <h1>Quel est votre site internet ?</h1>
+      <h1 id="site-title">Quel est votre site internet ?</h1>
       <form id="webhookForm" class="webhook-form">
       <input type="url" id="url" name="url" placeholder="https://votre-site.com" required>
       <button type="submit">
         <span class="btn-text">Envoyer</span>
       </button>
       </form>
-      <p id="loading">Chargement en cours...</p> <!-- Texte de chargement -->
+      <p id="loading">Veuillez patienter... <div id="spinner"></div></p> <!-- Texte et spinner de chargement -->
+
+      <div id="result-container" style="display:none; margin-top: 30px; text-align: left; color: white;">
+        <h2>Résultats de l'analyse</h2>
+        <p><strong>URL:</strong> <span id="res-url"></span></p>
+        <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
+        <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
+        <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
+        <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
+        <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
+        <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
+        <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
+    </div>
+
   </div>
 
   <!-- Charge la bibliothèque Particles.js -->
@@ -149,54 +179,52 @@
     const webhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/06c756e9-9d43-48da-9392-d6350eed01e3";
 
     document.getElementById('webhookForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const urlValue = document.getElementById('url').value;
-      const sessionId = generateUUID();
+    e.preventDefault();
+    const urlValue = document.getElementById('url').value;
+    const sessionId = generateUUID();
 
-      document.getElementById('loading').style.display = 'block'; // Afficher le message de chargement
+    // Masquer le formulaire et le titre
+    document.getElementById('site-title').style.display = 'none';
+    document.getElementById('webhookForm').style.display = 'none';
+    
+    // Afficher le message de chargement et spinner
+    document.getElementById('loading').style.display = 'block'; 
+    document.getElementById('spinner').style.display = 'block';  
 
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          url: urlValue,
-          sessionId: sessionId
-        })
-      });
-
-      document.getElementById('loading').style.display = 'none'; // Masquer le message de chargement après la réponse
-
-      if (response.ok) {
-        const data = await response.json();
-
-        document.getElementById("res-url").textContent = data.url;
-        document.getElementById("res-taille").textContent = data.taille_entreprise || "Non spécifié";
-        document.getElementById("res-secteur").textContent = data.secteur_activite || "Non spécifié";
-        document.getElementById("res-maturite").textContent = data.maturite || "Non spécifié";
-        document.getElementById("res-motscles").textContent = data.mots_cles_sectoriels.join(", ");
-        document.getElementById("res-casusages").textContent = data.cas_d_usage.join(", ");
-        document.getElementById("res-valeur").textContent = data.proposition_valeur || "Non spécifié";
-        document.getElementById("res-segments").textContent = data.segments_clientele.join(", ");
-
-        document.getElementById("result-container").style.display = "block";
-      } else {
-        alert("Erreur lors de l'envoi : " + response.status);
-      }
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        url: urlValue,
+        sessionId: sessionId
+      })
     });
-  </script>
 
-  <div id="result-container" style="display:none; margin-top: 30px; text-align: left; color: white;">
-      <h2>Résultats de l'analyse</h2>
-      <p><strong>URL:</strong> <span id="res-url"></span></p>
-      <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
-      <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
-      <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
-      <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
-      <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
-      <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
-      <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
-  </div>
+    // Masquer le message de chargement et le spinner après la réponse
+    document.getElementById('loading').style.display = 'none'; 
+    document.getElementById('spinner').style.display = 'none'; 
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // Mettre à jour les résultats avec les données reçues
+      document.getElementById("res-url").textContent = data.url;
+      document.getElementById("res-taille").textContent = data.taille_entreprise || "Non spécifié";
+      document.getElementById("res-secteur").textContent = data.secteur_activite || "Non spécifié";
+      document.getElementById("res-maturite").textContent = data.maturite || "Non spécifié";
+      document.getElementById("res-motscles").textContent = data.mots_cles_sectoriels.join(", ");
+      document.getElementById("res-casusages").textContent = data.cas_d_usage.join(", ");
+      document.getElementById("res-valeur").textContent = data.proposition_valeur || "Non spécifié";
+      document.getElementById("res-segments").textContent = data.segments_clientele.join(", ");
+
+      // Afficher le conteneur des résultats
+      document.getElementById("result-container").style.display = "block";
+    } else {
+      alert("Erreur lors de l'envoi : " + response.status);
+    }
+  });
+  </script>
 </body>
 </html>
