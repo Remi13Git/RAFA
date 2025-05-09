@@ -2,14 +2,36 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>RAFA Solutions</title>
+  <title>Soumettre une URL</title>
 </head>
 <body>
-  <h1>Veuillez entrer l'adresse de votre site internet</h1>
-  <form method="POST" action="https://rafa-hacktogone.app.n8n.cloud/webhook/06c756e9-9d43-48da-9392-d6350eed01e3">
-    <label for="url">URL du site à analyser :</label><br>
-    <input type="text" id="url" name="url" placeholder="https://exemple.com" required style="width: 300px;"><br><br>
-    <button type="submit">Analyser</button>
+  <form id="webhookForm">
+    <label for="url">URL du site :</label>
+    <input type="url" id="url" name="url" required>
+    <button type="submit">Envoyer</button>
   </form>
+
+  <script>
+    const webhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/06c756e9-9d43-48da-9392-d6350eed01e3";
+
+    document.getElementById('webhookForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const urlValue = document.getElementById('url').value;
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: urlValue })
+      });
+
+      if (response.ok) {
+        alert("Données envoyées avec succès !");
+      } else {
+        alert("Erreur lors de l'envoi : " + response.status);
+      }
+    });
+  </script>
 </body>
 </html>
