@@ -19,15 +19,15 @@
 
     .container {
         text-align: center;
-        background: rgba(0, 0, 0, 0.4); /* fond noir transparent */
-        backdrop-filter: blur(10px); /* flou de l'arrière-plan */
-        -webkit-backdrop-filter: blur(10px); /* support Safari */
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); /* ombre douce */
+        background: rgba(0, 0, 0, 0.4); 
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px); 
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
         border-radius: 16px;
         max-width: 400px;
         width: 100%;
         padding: 40px 60px;
-        border: 1px solid rgba(255, 255, 255, 0.1); /* bord fin et subtil */
+        border: 1px solid rgba(255, 255, 255, 0.1); 
         display: flex;
         flex-direction: column;
     }
@@ -77,11 +77,24 @@
     border-color: rgba(255, 255, 255, 0.4);
     }
 
+    #loading {
+      color: white;
+      font-size: 1.2rem;
+      display: none;
+    }
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
   </style>
 </head>
 <body>
 
-  <div id="particles-js"></div> <!-- L'élément pour l'effet de particules -->
+  <div id="particles-js"></div> 
 
   <div class="container">
       <h1>Quel est votre site internet ?</h1>
@@ -91,12 +104,12 @@
         <span class="btn-text">Envoyer</span>
       </button>
       </form>
+      <p id="loading">Chargement en cours...</p> <!-- Texte de chargement -->
   </div>
 
   <!-- Charge la bibliothèque Particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
-  <!-- Script qui initialise les particules -->
   <script>
     window.onload = function () {
       particlesJS('particles-js', {
@@ -123,84 +136,67 @@
     };
   </script>
 
-  <style>
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-  </style>
-
   <script>
     function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+      });
     }
   </script>
 
-  <!-- Script pour envoyer le formulaire au webhook -->
   <script>
     const webhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/06c756e9-9d43-48da-9392-d6350eed01e3";
 
     document.getElementById('webhookForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const urlValue = document.getElementById('url').value;
-    const sessionId = generateUUID();
+      e.preventDefault();
+      const urlValue = document.getElementById('url').value;
+      const sessionId = generateUUID();
 
+      document.getElementById('loading').style.display = 'block'; // Afficher le message de chargement
 
-    const response = await fetch("https://rafa-hacktogone.app.n8n.cloud/webhook-test/06c756e9-9d43-48da-9392-d6350eed01e3", {
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            url: urlValue,
-            sessionId: sessionId
+          url: urlValue,
+          sessionId: sessionId
         })
-    });
+      });
 
-    if (response.ok) {
+      document.getElementById('loading').style.display = 'none'; // Masquer le message de chargement après la réponse
+
+      if (response.ok) {
         const data = await response.json();
 
         document.getElementById("res-url").textContent = data.url;
-        document.getElementById("res-taille").textContent = data.taille_entreprise;
-        document.getElementById("res-secteur").textContent = data.secteur_activite;
-        document.getElementById("res-maturite").textContent = data.maturite;
+        document.getElementById("res-taille").textContent = data.taille_entreprise || "Non spécifié";
+        document.getElementById("res-secteur").textContent = data.secteur_activite || "Non spécifié";
+        document.getElementById("res-maturite").textContent = data.maturite || "Non spécifié";
         document.getElementById("res-motscles").textContent = data.mots_cles_sectoriels.join(", ");
         document.getElementById("res-casusages").textContent = data.cas_d_usage.join(", ");
-        document.getElementById("res-valeur").textContent = data.proposition_valeur;
+        document.getElementById("res-valeur").textContent = data.proposition_valeur || "Non spécifié";
         document.getElementById("res-segments").textContent = data.segments_clientele.join(", ");
 
         document.getElementById("result-container").style.display = "block";
-    } else {
+      } else {
         alert("Erreur lors de l'envoi : " + response.status);
-    }
+      }
     });
   </script>
 
-
-
-
-    <div id="result-container" style="display:none; margin-top: 30px; text-align: left; color: white;">
-        <h2>Résultats de l'analyse</h2>
-        <p><strong>URL:</strong> <span id="res-url"></span></p>
-        <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
-        <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
-        <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
-        <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
-        <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
-        <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
-        <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
-    </div>
-
-
-    
-  
-
-
-
+  <div id="result-container" style="display:none; margin-top: 30px; text-align: left; color: white;">
+      <h2>Résultats de l'analyse</h2>
+      <p><strong>URL:</strong> <span id="res-url"></span></p>
+      <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
+      <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
+      <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
+      <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
+      <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
+      <p><strong>Proposition de valeur:</strong> <span id="res-valeur"></span></p>
+      <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
+  </div>
 </body>
 </html>
