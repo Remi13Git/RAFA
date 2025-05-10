@@ -109,9 +109,15 @@
 
     .result-container {
         flex-direction: row;
+        justify-content: space-evenly;
+        gap: 20px;
     }
-    .result-container p  {
-        max-width: 80%;
+    .results-analysis, .results-icp {
+        width: 45%;
+    }
+
+    a {
+        color: white;
     }
 
   </style>
@@ -141,7 +147,7 @@
         </div>
         <div class="results-icp">
             <h2>ICP de l'entreprise</h2>
-            <p><strong>Taille de l'entreprise idéale:</strong> <span id="res-icp-taille"></span></p>
+            <p><strong>Taille de l'entreprise idéale:</strong> <a target="_blank"><span id="res-icp-taille"></span></a> </p>
             <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
             <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
             <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
