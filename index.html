@@ -143,7 +143,7 @@
       <div id="result-container" style="display:none; text-align: left; color: white;">
         <div class="results-analysis">
             <h2>Résultats de l'analyse</h2>
-            <p><strong>URL:</strong> <span id="res-url"></span></p>
+            <p><strong>Site web:</strong> <a id="res-url" target="_blank"></a></p>
             <p><strong>Taille de l'entreprise:</strong> <span id="res-taille"></span></p>
             <p><strong>Secteur d'activité:</strong> <span id="res-secteur"></span></p>
             <p><strong>Maturité:</strong> <span id="res-maturite"></span></p>
@@ -151,7 +151,7 @@
         </div>
         <div class="results-icp">
             <h2>ICP de l'entreprise</h2>
-            <p><strong>Taille de l'entreprise idéale:</strong> <a target="_blank"><span id="res-icp-taille"></span></a> </p>
+            <p><strong>Taille de l'entreprise idéale:</strong> <span id="res-icp-taille"></span></p>
             <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
             <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
             <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
@@ -239,7 +239,16 @@
     const entreprise = data.entreprise || {};
     const profil = data.profil_client_ideal || {};
 
-    document.getElementById("res-url").textContent = entreprise.url || "Non spécifié";
+    const urlElement = document.getElementById("res-url");
+    const url = entreprise.url;
+
+    if (url) {
+    urlElement.href = url;
+    urlElement.textContent = url;
+    } else {
+    urlElement.removeAttribute("href"); // Pour éviter les liens vides
+    urlElement.textContent = "Non spécifié";
+    }
     document.getElementById("res-taille").textContent = entreprise.taille_entreprise || "Non spécifié";
     document.getElementById("res-secteur").textContent = entreprise.secteur_activite || "Non spécifié";
     document.getElementById("res-maturite").textContent = entreprise.maturite || "Non spécifié";
