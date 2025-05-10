@@ -118,7 +118,7 @@
 
   <div id="particles-js"></div> 
 
-  <div class="container">
+  <div id="container" class="container">
       <h1 id="site-title">Quel est votre site internet ?</h1>
       <form id="webhookForm" class="webhook-form">
       <input type="url" id="url" name="url" placeholder="https://votre-site.com" required>
@@ -242,6 +242,7 @@
     document.getElementById("res-icp-taille").textContent = profil.taille_entreprise_ideale || "Non spécifié";
 
     document.getElementById("result-container").style.display = "flex";
+    document.getElementById("container").style.maxWidth = "800px";
     }
   });
   </script>
