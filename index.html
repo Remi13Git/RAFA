@@ -24,7 +24,7 @@
         -webkit-backdrop-filter: blur(10px); 
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
         border-radius: 16px;
-        max-width: 400px;
+        max-width: 500px;
         width: 100%;
         padding: 40px 60px;
         border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -131,9 +131,9 @@
   <div id="particles-js"></div> 
 
   <div class="container">
-      <h1 id="site-title">Quel est votre site internet ?</h1>
+      <h1 id="site-title">Quel site internet souhaitez-vous analyser ?</h1>
       <form id="webhookForm" class="webhook-form">
-      <input type="url" id="url" name="url" placeholder="https://votre-site.com" required>
+      <input type="url" id="url" name="url" placeholder="https://site-internet.com" required>
       <button type="submit">
         <span class="btn-text">Envoyer</span>
       </button>
@@ -160,6 +160,9 @@
             <p><strong>Points de douleur :</strong> <span id="res-pains"></span></p>
         </div>
       </div>
+      <button id="continue" style="display:none;">
+        <span class="btn-text">Continuer en générant des leads qualifiés</span>
+      </button>
 
   </div>
 
@@ -264,6 +267,7 @@
 
     document.getElementById("result-container").style.display = "flex";
     document.querySelector(".container").style.maxWidth = "800px";
+    document.getElementById("continue").style.display = "block";
     }
   });
   </script>
