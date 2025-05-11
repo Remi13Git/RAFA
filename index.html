@@ -219,9 +219,8 @@
         <span class="btn-text">Continuer en générant des leads qualifiés</span>
       </button>
 
-      <div id="leads-results">
-        <h1>Voici vos 5 meilleurs leads</h1> 
-      </div>
+      <h1 id="leads-title" style="display: none; margin-top: 80px;">Voici une liste de leads qualifiés</h1>
+      <div id="leads-results"></div>
 
   </div>
 
@@ -394,6 +393,7 @@
         });
   
         // Affichage de la section avec les résultats
+        document.getElementById('leads-title').style.display = 'block';
         resultsContainer.style.display = 'grid';
       } else {
         alert('Une erreur s\'est produite lors de la récupération des leads.');
