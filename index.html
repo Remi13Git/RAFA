@@ -277,7 +277,7 @@
 
   <script>
     const leadsWebhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/7466a58f-1438-4a75-aea9-bc70d46b9dd9";
-    
+
     document.getElementById('continue').addEventListener('click', async function() {
   // Afficher un message de chargement si nécessaire
   document.getElementById('loading').style.display = 'block'; 
@@ -297,6 +297,8 @@
   // Masquer le spinner et le message de chargement
   document.getElementById('loading').style.display = 'none'; 
   document.getElementById('spinner').style.display = 'none';  
+  document.getElementById('result-container').style.display = 'none';
+  document.getElementById('continue').style.display = 'none';
 
   if (response.ok) {
     const data = await response.json();
