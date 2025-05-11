@@ -207,6 +207,8 @@
         <span class="btn-text">Continuer en générant des leads qualifiés</span>
       </button>
 
+      <div id="leads-results"></div>
+
   </div>
 
   <!-- Charge la bibliothèque Particles.js -->
@@ -321,66 +323,68 @@
     const leadsWebhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/7466a58f-1438-4a75-aea9-bc70d46b9dd9";
   
     document.getElementById('continue').addEventListener('click', async function() {
-      // Afficher un message de chargement si nécessaire
-      document.getElementById('loading').style.display = 'block'; 
-      document.getElementById('spinner').style.display = 'block';  
-      document.getElementById('result-container').style.display = 'none';
-      document.getElementById('continue').style.display = 'none';
-  
-      // Exécution de l'appel au webhook
-      const response = await fetch(leadsWebhookUrl, {
+    // Afficher un message de chargement si nécessaire
+    document.getElementById('loading').style.display = 'block'; 
+    document.getElementById('spinner').style.display = 'block';  
+    document.getElementById('result-container').style.display = 'none';
+    document.getElementById('continue').style.display = 'none';
+
+    // Exécution de l'appel au webhook
+    const response = await fetch(leadsWebhookUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          sessionId: generateUUID()  // Utiliser un identifiant de session ou des données supplémentaires nécessaires
+        sessionId: generateUUID()  // Utiliser un identifiant de session ou des données supplémentaires nécessaires
         })
-      });
-  
-      // Masquer le spinner et le message de chargement
-      document.getElementById('loading').style.display = 'none'; 
-      document.getElementById('spinner').style.display = 'none';  
-  
-      if (response.ok) {
+    });
+
+    // Masquer le spinner et le message de chargement
+    document.getElementById('loading').style.display = 'none'; 
+    document.getElementById('spinner').style.display = 'none';  
+
+    if (response.ok) {
         const data = await response.json();
-  
-        // Récupérer le container des résultats
-        const resultsContainer = document.getElementById('result-container');
-  
+
+        // Récupérer le container des leads
+        const leadsContainer = document.getElementById('leads-results');
+
         // Vider le container avant de l'afficher
-        resultsContainer.innerHTML = ''; 
-  
-        // Pour chaque profil retourné
+        leadsContainer.innerHTML = '';  
+
+        // Pour chaque lead retourné
         data.forEach((profil) => {
-          const profileData = profil.output ? JSON.parse(profil.output) : {};
-  
-          // Créer un élément pour chaque profil
-          const profileElement = document.createElement('div');
-          profileElement.classList.add('lead-profile'); // Ajoutez une classe pour la personnalisation CSS
-  
-          profileElement.innerHTML = `
+        const profileData = profil.output ? JSON.parse(profil.output) : {};
+
+        // Créer un élément pour chaque lead
+        const profileElement = document.createElement('div');
+        profileElement.classList.add('lead-profile'); // Ajoutez une classe pour la personnalisation CSS
+
+        profileElement.innerHTML = `
             <div class="profile-item">
-              <h3>${profileData.fullname}</h3>
-              <img src="${profileData.profileImageUrl}" alt="${profileData.fullname}" width="100" height="100">
-              <p><strong>Nom:</strong> ${profileData.fullname}</p>
-              <p><strong>Entreprise:</strong> ${profileData.companyName}</p>
-              <p><strong>Titre:</strong> ${profileData.title}</p>
-              <p><strong>Score:</strong> ${profileData.score}</p>
-              <p><a href="${profileData.profileUrl}" target="_blank">Voir le profil LinkedIn</a></p>
+            <h3>${profileData.fullname}</h3>
+            <img src="${profileData.profileImageUrl}" alt="${profileData.fullname}" width="100" height="100">
+            <p><strong>Nom:</strong> ${profileData.fullname}</p>
+            <p><strong>Entreprise:</strong> ${profileData.companyName}</p>
+            <p><strong>Titre:</strong> ${profileData.title}</p>
+            <p><strong>Score:</strong> ${profileData.score}</p>
+            <p><a href="${profileData.profileUrl}" target="_blank">Voir le profil LinkedIn</a></p>
             </div>
             <hr>
-          `;
-          
-          resultsContainer.appendChild(profileElement);
+        `;
+        
+        // Ajouter le profil dans la div leads-results
+        leadsContainer.appendChild(profileElement);
         });
-  
+
         // Affichage de la section avec les résultats
-        resultsContainer.style.display = 'block';
-      } else {
+        leadsContainer.style.display = 'block'; // Assurez-vous que la div est visible
+    } else {
         alert('Une erreur s\'est produite lors de la récupération des leads.');
-      }
+    }
     });
+
   </script>
   
 </body>
