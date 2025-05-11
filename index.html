@@ -210,9 +210,6 @@
             <p><strong>Segments de clientèle:</strong> <span id="res-segments"></span></p>
             <p><strong>Mots-clés sectoriels:</strong> <span id="res-motscles"></span></p>
             <p><strong>Cas d'usage:</strong> <span id="res-casusages"></span></p>
-            <p><strong>Caractéristiques de la demande:</strong> <span id="res-caracteristiques"></span></p>
-            <p><strong>Objectifs de l'entreprise cliente:</strong> <span id="res-objectifs"></span></p>
-            <p><strong>Points de douleur :</strong> <span id="res-pains"></span></p>
         </div>
       </div>
       <button id="continue" style="display:none;">
@@ -320,9 +317,6 @@
     document.getElementById("res-motscles").textContent = (profil.mots_cles_sectoriels || []).join(", ");
     document.getElementById("res-casusages").textContent = (profil.cas_d_usage || []).join(", ");
     document.getElementById("res-segments").textContent = (profil.segments_clientele || []).join(", ");
-    document.getElementById("res-caracteristiques").textContent = (profil.caracteristiques_demande || []).join(", ");
-    document.getElementById("res-objectifs").textContent = (profil.objectifs_entreprise || []).join(", ");
-    document.getElementById("res-pains").textContent = (profil.pains_points || []).join(", ");
     document.getElementById("res-icp-taille").textContent = profil.taille_entreprise_ideale || "Non spécifié";
 
     document.getElementById("result-container").style.display = "flex";
@@ -339,6 +333,7 @@
       // Afficher un message de chargement si nécessaire
       document.getElementById('loading').style.display = 'block'; 
       document.getElementById('spinner').style.display = 'block';  
+      document.querySelector(".container").style.maxWidth = "400px";
       document.getElementById('result-container').style.display = 'none';
       document.getElementById('continue').style.display = 'none';
   
