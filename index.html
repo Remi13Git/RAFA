@@ -207,32 +207,7 @@
         <span class="btn-text">Continuer en générant des leads qualifiés</span>
       </button>
 
-      <div id="leads-results">
-        <h2>Voici vos leads qualifiés</h2>
-    
-        <!-- Première Lead -->
-        <div class="lead-profile">
-            <p><strong>Profile Url</strong> <a id="lead1-profile-url" target="_blank"></a></p>
-            <p><strong>Entreprise</strong> <span id="lead1-company-name"></span></p>
-            <p><strong>Titre</strong> <span id="lead1-title"></span></p>
-            <p><strong>Nom complet</strong> <span id="lead1-fullname"></span></p>
-            <p><strong>Score</strong> <span id="lead1-score"></span></p>
-            <p><strong>Photo de profil</strong> <img id="lead1-profile-img" width="100" height="100"></p>
-        </div>
-        
-        <!-- Deuxième Lead -->
-        <div class="lead-profile">
-            <p><strong>Profile Url</strong> <a id="lead2-profile-url" target="_blank"></a></p>
-            <p><strong>Entreprise</strong> <span id="lead2-company-name"></span></p>
-            <p><strong>Titre</strong> <span id="lead2-title"></span></p>
-            <p><strong>Nom complet</strong> <span id="lead2-fullname"></span></p>
-            <p><strong>Score</strong> <span id="lead2-score"></span></p>
-            <p><strong>Photo de profil</strong> <img id="lead2-profile-img" width="100" height="100"></p>
-        </div>
-        
-        <!-- Vous pouvez répéter ces divs pour autant de leads que vous avez -->
-    
-    </div>
+      <div id="leads-results"></div>
 
   </div>
 
@@ -346,76 +321,68 @@
 
 <script>
     const leadsWebhookUrl = "https://rafa-hacktogone.app.n8n.cloud/webhook-test/7466a58f-1438-4a75-aea9-bc70d46b9dd9";
-
+  
     document.getElementById('continue').addEventListener('click', async function() {
-    // Afficher un message de chargement si nécessaire
-    document.getElementById('loading').style.display = 'block'; 
-    document.getElementById('spinner').style.display = 'block';  
-    document.getElementById('result-container').style.display = 'none';
-    document.getElementById('continue').style.display = 'none';
-
-    // Exécution de l'appel au webhook
-    const response = await fetch(leadsWebhookUrl, {
+      // Afficher un message de chargement si nécessaire
+      document.getElementById('loading').style.display = 'block'; 
+      document.getElementById('spinner').style.display = 'block';  
+      document.getElementById('result-container').style.display = 'none';
+      document.getElementById('continue').style.display = 'none';
+  
+      // Exécution de l'appel au webhook
+      const response = await fetch(leadsWebhookUrl, {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-        sessionId: generateUUID()  // Utiliser un identifiant de session ou des données supplémentaires nécessaires
+          sessionId: generateUUID()  // Utiliser un identifiant de session ou des données supplémentaires nécessaires
         })
-    });
-
-    // Masquer le spinner et le message de chargement
-    document.getElementById('loading').style.display = 'none'; 
-    document.getElementById('spinner').style.display = 'none';  
-
-    if (response.ok) {
+      });
+  
+      // Masquer le spinner et le message de chargement
+      document.getElementById('loading').style.display = 'none'; 
+      document.getElementById('spinner').style.display = 'none';  
+  
+      if (response.ok) {
         const data = await response.json();
-
-        // Récupérer le container des leads
-        const leadsContainer = document.getElementById('leads-results');
-
+  
+        // Récupérer le container des résultats
+        const resultsContainer = document.getElementById('result-container');
+  
         // Vider le container avant de l'afficher
-        leadsContainer.innerHTML = '';  
-
-        // Pour chaque lead retourné, mettre à jour les éléments HTML avec les données reçues
-        data.forEach((profil, index) => {
-        const profileData = profil.output ? JSON.parse(profil.output) : {};
-        
-        // Identifier les éléments HTML pour chaque lead (par exemple lead1, lead2, etc.)
-        const profilePrefix = `lead${index + 1}`;
-
-        // Mettre à jour les informations des leads
-        document.getElementById(`${profilePrefix}-profile-url`).href = profileData.profileUrl;
-        document.getElementById(`${profilePrefix}-company-name`).textContent = profileData.companyName;
-        document.getElementById(`${profilePrefix}-title`).textContent = profileData.title;
-        document.getElementById(`${profilePrefix}-fullname`).textContent = profileData.fullname;
-        document.getElementById(`${profilePrefix}-score`).textContent = profileData.score;
-        document.getElementById(`${profilePrefix}-profile-img`).src = profileData.profileImageUrl;
-        
-        // Créer et ajouter la div contenant les informations du lead
-        const leadProfileElement = document.createElement('div');
-        leadProfileElement.classList.add('lead-profile');
-        leadProfileElement.innerHTML = `
-            <p><strong>Profile Url</strong> <a href="${profileData.profileUrl}" target="_blank">${profileData.profileUrl}</a></p>
-            <p><strong>Entreprise</strong> ${profileData.companyName}</p>
-            <p><strong>Titre</strong> ${profileData.title}</p>
-            <p><strong>Nom complet</strong> ${profileData.fullname}</p>
-            <p><strong>Score</strong> ${profileData.score}</p>
-            <p><strong>Photo de profil</strong> <img src="${profileData.profileImageUrl}" width="100" height="100"></p>
-        `;
-
-        // Ajouter chaque profil de lead à la section des leads
-        leadsContainer.appendChild(leadProfileElement);
+        resultsContainer.innerHTML = ''; 
+  
+        // Pour chaque profil retourné
+        data.forEach((profil) => {
+          const profileData = profil.output ? JSON.parse(profil.output) : {};
+  
+          // Créer un élément pour chaque profil
+          const profileElement = document.createElement('div');
+          profileElement.classList.add('lead-profile'); // Ajoutez une classe pour la personnalisation CSS
+  
+          profileElement.innerHTML = `
+            <div class="profile-item">
+              <h3>${profileData.fullname}</h3>
+              <img src="${profileData.profileImageUrl}" alt="${profileData.fullname}" width="100" height="100">
+              <p><strong>Nom:</strong> ${profileData.fullname}</p>
+              <p><strong>Entreprise:</strong> ${profileData.companyName}</p>
+              <p><strong>Titre:</strong> ${profileData.title}</p>
+              <p><strong>Score:</strong> ${profileData.score}</p>
+              <p><a href="${profileData.profileUrl}" target="_blank">Voir le profil LinkedIn</a></p>
+            </div>
+            <hr>
+          `;
+          
+          resultsContainer.appendChild(profileElement);
         });
-
+  
         // Affichage de la section avec les résultats
-        leadsContainer.style.display = 'block'; // Assurez-vous que la div est visible
-    } else {
+        resultsContainer.style.display = 'block';
+      } else {
         alert('Une erreur s\'est produite lors de la récupération des leads.');
-    }
+      }
     });
-
   </script>
   
 </body>
