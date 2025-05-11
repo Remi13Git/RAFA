@@ -219,7 +219,7 @@
         <span class="btn-text">Continuer en générant des leads qualifiés</span>
       </button>
 
-      <h1 id="leads-title" style="display: none; margin-top: 80px;">Voici une liste de leads qualifiés</h1>
+      <h1 id="leads-title" style="display: none; margin-top: 0px;">Voici une liste de leads qualifiés</h1>
       <div id="leads-results"></div>
 
   </div>
@@ -364,6 +364,7 @@
         const resultsContainer = document.getElementById('leads-results');
         document.querySelector(".container").style.maxWidth = "1070px";
         document.querySelector(".container").style.marginTop = "200px";
+        document.querySelector("body").style.paddingTop = "400px";
   
         // Vider le container avant de l'afficher
         resultsContainer.innerHTML = ''; 
