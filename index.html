@@ -361,6 +361,8 @@
   
         // Récupérer le container des résultats
         const resultsContainer = document.getElementById('leads-results');
+        document.querySelector(".container").style.maxWidth = "1070px";
+        document.querySelector(".container").style.marginTop = "200px";
   
         // Vider le container avant de l'afficher
         resultsContainer.innerHTML = ''; 
@@ -374,7 +376,8 @@
           profileElement.classList.add('lead-profile'); // Ajoutez une classe pour la personnalisation CSS
   
           profileElement.innerHTML = `
-            <div class="profile-item">
+          <h1>Voici vos 5 meilleurs leads</h1>  
+          <div class="profile-item">
               <h3>${profileData.fullname}</h3>
               <img src="${profileData.profileImageUrl}" alt="${profileData.fullname}" width="100" height="100">
               <p><strong>Nom:</strong> ${profileData.fullname}</p>
@@ -390,7 +393,7 @@
         });
   
         // Affichage de la section avec les résultats
-        resultsContainer.style.display = 'block';
+        resultsContainer.style.display = 'grid';
       } else {
         alert('Une erreur s\'est produite lors de la récupération des leads.');
       }
