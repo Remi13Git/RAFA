@@ -219,7 +219,9 @@
         <span class="btn-text">Continuer en générant des leads qualifiés</span>
       </button>
 
-      <div id="leads-results"></div>
+      <div id="leads-results">
+        <h1>Voici vos 5 meilleurs leads</h1> 
+      </div>
 
   </div>
 
@@ -375,8 +377,7 @@
           const profileElement = document.createElement('div');
           profileElement.classList.add('lead-profile'); // Ajoutez une classe pour la personnalisation CSS
   
-          profileElement.innerHTML = `
-          <h1>Voici vos 5 meilleurs leads</h1>  
+          profileElement.innerHTML = ` 
           <div class="profile-item">
               <h3>${profileData.fullname}</h3>
               <img src="${profileData.profileImageUrl}" alt="${profileData.fullname}" width="100" height="100">
